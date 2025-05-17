@@ -32,12 +32,32 @@ exports.addBookController = async(req,res) => {
             })
             console.log('new book found',newBook);
             newBook.save();
-            
+
             res.status(200).json(newBook);
         }
     }catch(error){
         res.status(500).json(error)
     }
+    // res.status(200).json('request recived from add book controller')
+}
 
-    res.status(200).json('request recived from add book controller')
+
+// to get the latest books in the home page
+exports.getHomeBookController = async(req,res) => {
+    try{
+        const allBooks = await books.find().sort({_id:-1}).limit(4)
+        res.status(200).json(allBooks)
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
+
+// get all the books
+exports.getAllBookController = async(req,res) => {
+    try{
+        const allBooks = await books.find().sort({_id:-1}).limit(4)
+        res.status(200).json(allBooks)
+    }catch(error){
+        res.status(500).json(error)
+    }
 }

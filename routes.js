@@ -18,9 +18,16 @@ route.post("/login",userController.loginController)
 //path for google login
 route.post("/google-login", userController.googleLoginController)
 
+//path to get the books (the latest 4 books)
+route.get('/all-home-book',bookController.getHomeBookController)
+
 //path to add the books
 //when we test in the frontend via the postman the uploadedImages key should be passed
 route.post("/add-books",jwtMiddleware,multerConfig.array('uploadedImages',3) ,  bookController.addBookController)
+
+
+// path to get all the books in the database
+route.get('/all-books', jwtMiddleware,  bookController.getAllBookController) ;
 
 //routes export
 module.exports = route
