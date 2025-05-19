@@ -16,13 +16,17 @@ const bookServer = express();
 
 // the following order is important
 bookServer.use(cors()); // connect the server with frontend using cors
-// json is the common standard format of sharing data between the frontend and backend  (middleware) 
+// json is the common standard format of sharing data between the frontend and backend  (middleware)
 bookServer.use(express.json()); // pares JSON data , we use middleware
 
 // the application specific request should pass through the app middleware before going to the routes
 // bookServer.use(appMiddleware);  // we will use this later
-// inorder to break all of the requests into logical operations we use a routes.js file 
+// inorder to break all of the requests into logical operations we use a routes.js file
 bookServer.use(route)  // tell server to use route
+
+
+//push the uploads folder to the
+	bookServer.use('/uploads',express.static('./uploads'))
 
 
 // create/set the port

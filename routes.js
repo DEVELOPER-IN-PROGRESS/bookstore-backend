@@ -29,5 +29,8 @@ route.post("/add-books",jwtMiddleware,multerConfig.array('uploadedImages',3) ,  
 // path to get all the books in the database
 route.get('/all-books', jwtMiddleware,  bookController.getAllBookController) ;
 
+//path to get a single book from the database
+route.get('/view-book/:id', bookController.getSingleBookController );
+
 //routes export
 module.exports = route

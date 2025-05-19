@@ -54,9 +54,31 @@ exports.getHomeBookController = async(req,res) => {
 
 // get all the books
 exports.getAllBookController = async(req,res) => {
+    const searchKey = req.query.search ;
     try{
-        const allBooks = await books.find().sort({_id:-1}).limit(4)
+
+        const query = {
+            title:{
+                $regex: searchKey ,
+                $options:"i" // to make it as lowercase 
+            }
+        }
+
+        const allBooks = await books.find(query)
         res.status(200).json(allBooks)
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
+
+//to get a particular book from the database
+exports.getSingleBookController  =  async(req,res) => {
+    const {id} = req.params;
+    console.log(id)
+    try{
+        const eBook = await books.findOne({_id: id});
+        console.log(eBook)
+        res.status(200).json(eBook)
     }catch(error){
         res.status(500).json(error)
     }
