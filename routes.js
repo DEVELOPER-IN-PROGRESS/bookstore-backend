@@ -32,5 +32,12 @@ route.get('/all-books', jwtMiddleware,  bookController.getAllBookController) ;
 //path to get a single book from the database
 route.get('/view-book/:id', bookController.getSingleBookController );
 
+// path for getting all books in the admin side
+route.get('/admin-books',jwtMiddleware, bookController.getAllBookAdminController)
+
+
+// path to approve a book
+route.put('/approve-book',jwtMiddleware,bookController.approveBookController)
+
 //routes export
 module.exports = route
