@@ -80,3 +80,16 @@ exports.googleLoginController = async(req,res) => {
 	}
 }
 
+// get all users
+exports.getAllUsersController = async(req,res) => {
+	const emailadmin = req.payload
+	console.log('hello there')
+	console.log(emailadmin)
+	try{
+		const allUsers = await users.find({email:{$ne:emailadmin}})
+		console.log(allUsers)
+		res.status(200).json(allUsers)
+	}catch(error){
+		res.status(500).json(error)
+	}
+}

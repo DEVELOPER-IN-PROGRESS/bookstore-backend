@@ -2,6 +2,7 @@
 const express = require('express')
 const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController')
+const jobController = require('./controllers/jobController')
 const jwtMiddleware = require('./middleware/jwtMiddleware');
 //import multer config
 const multerConfig = require('./middleware/imgMulterMiddleware');
@@ -39,5 +40,14 @@ route.get('/admin-books',jwtMiddleware, bookController.getAllBookAdminController
 // path to approve a book
 route.put('/approve-book',jwtMiddleware,bookController.approveBookController)
 
-//routes export
+// path to get all the users from the database
+route.get('/all-users',jwtMiddleware,userController.getAllUsersController)
+
+// ====================  job controllers =========================
+
+// path to add new jobs
+route.post('/add-job', jobController.addJobsContoller);
+
+
+//routes exports
 module.exports = route
