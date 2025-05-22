@@ -23,6 +23,34 @@ exports.addJobsContoller = async(req,res) => {
     }
 }
 
+exports.getAllJobsController = async(req,res) => {
+const serachKey = req.query.search
+console.log(serachKey)
+
+ try{
+    const options = {
+        title:{$regex:serachKey, $options:'i'}
+    }
+    const allJobs = await jobs.find(options)
+    console.log(allJobs)
+    res.status(200).json(allJobs)
+
+ }catch(error){
+    res.status(500).json(error)
+ }
+}
+
+
+//delete a job from the backend
+exports.deleteAJobController  = async(req,res)=>{
+    const {id} = req.params
+    try{
+        const job = await jobs.findByIdAndDelete({_id:id})
+        res.status(200).json(job)
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
 
 /*
 

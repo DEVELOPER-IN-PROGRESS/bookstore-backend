@@ -3,9 +3,12 @@ const express = require('express')
 const userController = require('./controllers/userController');
 const bookController = require('./controllers/bookController')
 const jobController = require('./controllers/jobController')
+const applicationController = require('./controllers/applicationController')
 const jwtMiddleware = require('./middleware/jwtMiddleware');
 //import multer config
 const multerConfig = require('./middleware/imgMulterMiddleware');
+//import pdf multer config
+const pdfMulterConfig = require('./middleware/pdfMulter')
 
 //create instance to access the class router in express
 const route = new express.Router();
@@ -33,6 +36,11 @@ route.get('/all-books', jwtMiddleware,  bookController.getAllBookController) ;
 //path to get a single book from the database
 route.get('/view-book/:id', bookController.getSingleBookController );
 
+route.post('/apply-job',jwtMiddleware, pdfMulterConfig.single('resume'),
+applicationController.addApplications)
+
+// ========================== ADMIN API's ============================
+
 // path for getting all books in the admin side
 route.get('/admin-books',jwtMiddleware, bookController.getAllBookAdminController)
 
@@ -47,6 +55,15 @@ route.get('/all-users',jwtMiddleware,userController.getAllUsersController)
 
 // path to add new jobs
 route.post('/add-job', jobController.addJobsContoller);
+
+route.get('/all-jobs', jobController.getAllJobsController)
+
+//delete a job from the backend
+route.delete('/delete-job/:id', jobController.deleteAJobController)
+
+// route to apply for a job
+
+route.post('/apply-job', applicationController.addApplications)
 
 
 //routes exports
