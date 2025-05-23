@@ -26,7 +26,8 @@ bookServer.use(route)  // tell server to use route
 
 
 //push the uploads folder to the
-	bookServer.use('/uploads',express.static('./uploads'))
+bookServer.use('/uploads',express.static('./uploads'))
+bookServer.use('/pdfuploads',express.static('./pdfuploads'))
 
 
 // create/set the port

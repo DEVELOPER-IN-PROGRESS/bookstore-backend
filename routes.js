@@ -39,6 +39,8 @@ route.get('/view-book/:id', bookController.getSingleBookController );
 route.post('/apply-job',jwtMiddleware, pdfMulterConfig.single('resume'),
 applicationController.addApplications)
 
+route.get('/all-application', applicationController.getAllApplicationController)
+
 // ========================== ADMIN API's ============================
 
 // path for getting all books in the admin side

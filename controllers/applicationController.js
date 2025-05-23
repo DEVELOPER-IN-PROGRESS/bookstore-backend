@@ -24,3 +24,15 @@ exports.addApplications = async(req,res) => {
         res.status(500).json(error)
     }
 }
+
+exports.getAllApplicationController = async(req,res) => {
+    try{
+        const AllApplication = await  applications.find()
+        console.log(AllApplication)
+        if(AllApplication){
+            res.status(200).json(AllApplication)
+        }
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
