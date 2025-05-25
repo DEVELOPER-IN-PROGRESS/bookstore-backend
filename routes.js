@@ -41,11 +41,12 @@ applicationController.addApplications)
 
 route.get('/all-application', applicationController.getAllApplicationController)
 
+route.put('/admin-profile-update',jwtMiddleware ,multerConfig.single('profile'),userController.editAdminProfileController)
+
 // ========================== ADMIN API's ============================
 
 // path for getting all books in the admin side
 route.get('/admin-books',jwtMiddleware, bookController.getAllBookAdminController)
-
 
 // path to approve a book
 route.put('/approve-book',jwtMiddleware,bookController.approveBookController)
@@ -66,7 +67,6 @@ route.delete('/delete-job/:id', jobController.deleteAJobController)
 // route to apply for a job
 
 route.post('/apply-job', applicationController.addApplications)
-
 
 //routes exports
 module.exports = route

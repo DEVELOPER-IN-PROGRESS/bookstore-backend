@@ -2,7 +2,8 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req,file,callback) => {
-        console.log(req.body,'destin    ation')
+        // console.log(req.body,'multer active')
+
         callback(null, './uploads') // path to store the file
     },
     // name in which the file is stored
@@ -27,9 +28,6 @@ const fileFilter = (req, file , callback ) => {
         callback(new Error('accepts only png ,jpg, jpeg files ')); break;
     }
 }
-
-
-
 
 // create config
 const multerConfig = multer({
