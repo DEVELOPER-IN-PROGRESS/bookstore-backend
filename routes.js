@@ -43,6 +43,9 @@ route.get('/all-application', applicationController.getAllApplicationController)
 
 route.put('/admin-profile-update',jwtMiddleware ,multerConfig.single('profile'),userController.editAdminProfileController)
 
+//user profile update
+route.put('/user-profile-update',jwtMiddleware,multerConfig.single('profile'),userController.editUserProfileController)
+
 // ========================== ADMIN API's ============================
 
 // path for getting all books in the admin side

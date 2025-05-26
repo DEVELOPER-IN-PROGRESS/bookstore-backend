@@ -114,3 +114,25 @@ exports.editAdminProfileController = async(req,res) => {
 		res.status(500).json(error)
 	}
 }
+
+exports.editUserProfileController = async(req, res) => {
+	console.log('user profile controller ')
+	const { username , password , profile , bio  } = req.body;
+	console.log(req.body);
+	const email = req.payload
+	const newBio = bio? req.body.bio : bio;
+	const picture = req.file? req.file.filename: profile;
+
+	console.log(newBio, picture,email)
+
+	try{
+		const userDetails = await users.findOneAndUpdate({email},{
+		username, email , password , bio:newBio , profile: picture},
+			{new:true})
+		await userDetails.save()
+		console.log(userDetails)
+		res.status(200).json(userDetails)
+	}catch(error){
+		res.status(500).json(error)
+	}
+}
