@@ -46,6 +46,16 @@ route.put('/admin-profile-update',jwtMiddleware ,multerConfig.single('profile'),
 //user profile update
 route.put('/user-profile-update',jwtMiddleware,multerConfig.single('profile'),userController.editUserProfileController)
 
+// get all the user added books
+route.get('/user-books',jwtMiddleware, bookController.getAllUserBookController)
+//path to get all the user brought books
+route.get('/user-brought-books', jwtMiddleware, bookController.getAllUserBroughtBookController)
+
+route.delete('/delete-user-books/:id',bookController.deleteUserBookController)
+
+// payment gateway
+route.put('/make-payment',bookController.makePaymentController)
+
 // ========================== ADMIN API's ============================
 
 // path for getting all books in the admin side

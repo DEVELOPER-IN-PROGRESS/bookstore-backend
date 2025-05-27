@@ -41,7 +41,6 @@ exports.addBookController = async(req,res) => {
     // res.status(200).json('request recived from add book controller')
 }
 
-
 // to get the latest books in the home page
 exports.getHomeBookController = async(req,res) => {
     try{
@@ -54,7 +53,7 @@ exports.getHomeBookController = async(req,res) => {
 
 // get all the books
 exports.getAllBookController = async(req,res) => {
-    const searchKey = req.query.search ;
+    const searchKey = req.query.search;
     const email = req.payload
     try{
 
@@ -88,7 +87,69 @@ exports.getSingleBookController  =  async(req,res) => {
     }
 }
 
+exports.getAllUserBookController = async(req,res) => {
+    const email = req.payload
+    console.log({email})
+    try{
+        const allUserBroughtBooks = await books.find({userMail:email})
+        res.status(200).json(allUserBroughtBooks)
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
 
+exports.getAllUserBroughtBookController = async(req,res) => {
+     const email = req.payload
+    console.log({email})
+    try {
+        const allBooksBoughtByUser = await books.find({brought : email})
+        res.status(200).json(allBooksBoughtByUser)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+//to get all books added by user
+// exports.getAllUserAddedBooksController = async (req,res) => {
+//     const email = req.payload
+//     try {
+//         const allBooksByUser = await books.find({userMail : email})
+//         res.status(200).json(allBooksByUser)
+//     } catch (error) {
+//         res.status(500).json(error)
+
+//     }
+// }
+
+//to get all books bought by user
+// exports.getAllUserBoughtBookController = async (req,res) => {
+//     const email = req.payload
+//     try {
+//         const allBooksBoughtByUser = await books.find({bought : email})
+//         res.status(200).json(allBooksBoughtByUser)
+//     } catch (error) {
+//         res.status(500).json(error)
+
+//     }
+// }
+
+exports.deleteUserBookController = async(req,res) => {
+    const {id} = req.params
+    console.log(id)
+    try{
+        await books.findOne({id})
+
+        // await books.findByIdAndDelete({id})
+        res.status(200).json('delete successful')
+    }catch(error){
+        res.status(500).json(error)
+    }
+}
+
+// api to make the payment
+exports.makePaymentController = async(req,res)=>{
+   
+}
 
 // ============================== ADMIN  ==============================
 
