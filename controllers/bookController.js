@@ -1,5 +1,6 @@
 // to add a  book
 const books = require('../model/bookModel')
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 exports.addBookController = async(req,res) => {
     console.log('inside the add book controller')
@@ -80,7 +81,7 @@ exports.getSingleBookController  =  async(req,res) => {
     console.log(id)
     try{
         const eBook = await books.findOne({_id: id});
-        console.log(eBook)
+        // console.log(eBook)
         res.status(200).json(eBook)
     }catch(error){
         res.status(500).json(error)
@@ -100,7 +101,7 @@ exports.getAllUserBookController = async(req,res) => {
 
 exports.getAllUserBroughtBookController = async(req,res) => {
      const email = req.payload
-    console.log({email})
+    console.log({email},'brought')
     try {
         const allBooksBoughtByUser = await books.find({brought : email})
         res.status(200).json(allBooksBoughtByUser)
@@ -148,7 +149,79 @@ exports.deleteUserBookController = async(req,res) => {
 
 // api to make the payment
 exports.makePaymentController = async(req,res)=>{
+   console.log('payment controller')
+   const { bookDetails } = req.body;
+   console.log({bookDetails})
+   const email = req.payload;
+   console.log(email);
    
+   try{
+     const existingBook = await books.findByIdAndUpdate({_id:bookDetails._id},{
+         title : bookDetails.title  ,
+            author : bookDetails.author  ,
+            isbn  : bookDetails.isbn  ,
+            noofpages : bookDetails.noofpages  ,
+            price  : bookDetails.price  ,
+            abstract  : bookDetails.abstract  ,
+            uploadedImg  : bookDetails  ,
+            dprice  : bookDetails.dprice  ,
+            imageUrl  : bookDetails.imageUrl  ,
+            publisher  : bookDetails.publisher  ,
+            language: bookDetails.language,
+            category: bookDetails.category,
+            status: 'sold',
+            userMail: bookDetails.userMail,
+            brought: email
+     },{new:true})
+    //  debugger;
+     console.log({existingBook})
+
+    const line_item = [{
+        price_data:{
+            currency: "usd",
+            product_data: {
+                name: bookDetails.title,
+                description: `${bookDetails.author} | ${bookDetails.publisher }`,
+                images: [bookDetails.imageUrl],
+                metadata:{
+                    title : bookDetails.title  ,
+                    author : bookDetails.author  ,
+                    isbn  : bookDetails.isbn  ,
+                    noofpages : bookDetails.noofpages  ,
+                    price  : `${bookDetails.price}`  ,
+                    abstract  : bookDetails.abstract.slice(0,200)  ,
+                    // uploadedImg  : bookDetails  ,
+                    dprice  : `${bookDetails.dprice}`  ,
+                    imageUrl  : bookDetails.imageUrl  ,
+                    publisher  : bookDetails.publisher  ,
+                    language: bookDetails.language,
+                    category: bookDetails.category,
+                    status: 'sold',
+                    userMail: bookDetails.userMail,
+                    brought: bookDetails.brought,
+                }
+            },
+            //cents to dollar conversion unit_amount is in cents.
+            unit_amount: bookDetails.dprice*100,
+        },
+        quantity:1,
+    }]
+    // create stripe checkout session
+     const session = await stripe.checkout.sessions.create({
+        line_items: line_item,
+        payment_method_types: ['card'],
+        // change the success and failure urls later
+        success_url:'http://localhost:5173/payment-success',
+        cancel_url: 'http://localhost:5173/payment-error',
+        mode: 'payment',
+     })
+
+    console.log({session})
+    res.status(200).json({ sessionId:session.id, existingBook })
+
+   }catch(error){
+    res.status(500).json(error)
+   }
 }
 
 // ============================== ADMIN  ==============================

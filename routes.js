@@ -54,7 +54,7 @@ route.get('/user-brought-books', jwtMiddleware, bookController.getAllUserBrought
 route.delete('/delete-user-books/:id',bookController.deleteUserBookController)
 
 // payment gateway
-route.put('/make-payment',bookController.makePaymentController)
+route.put('/make-payment',jwtMiddleware, bookController.makePaymentController)
 
 // ========================== ADMIN API's ============================
 
